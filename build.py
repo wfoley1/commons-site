@@ -21,7 +21,7 @@ CONFIG = {
     "email": "commonshomeservices@gmail.com",
     # Free key from web3forms.com, issued to the business Gmail. Empty = booking form
     # tells the customer to call or text instead (it never pretends to have sent).
-    "web3forms_key": "",
+    "web3forms_key": "7eeca234-f80f-404b-94c5-455190755da7",
     # Google reviews link (https://search.google.com/local/reviews?placeid=...),
     # available once the Business Profile is verified.
     "reviews_url": "",
