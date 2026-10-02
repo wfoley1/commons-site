@@ -28,9 +28,15 @@ CONFIG = {
     "booking_hours": [8, 18],  # first and last hour offered in the time picker, 24h
 }
 
-TOWNS = ["Woodside", "Atherton", "Redwood City", "Menlo Park", "Portola Valley", "Palo Alto",
-         "Los Altos", "Los Altos Hills", "San Carlos", "Belmont", "San Mateo", "Hillsborough",
-         "Mountain View"]
+# Service area, Will 2026-10-02: San Jose to Marin, no East Bay. AREA/AREA_NOTE are the only
+# place the wording lives; TOWNS feeds the marquee, town list, footer and schema areaServed.
+AREA = "San Jose to Marin"
+AREA_NOTE = "We do work from San Jose all the way to Marin. No East Bay though (yet)."
+TOWNS = ["San Jose", "Santa Clara", "Sunnyvale", "Cupertino", "Mountain View", "Los Altos",
+         "Los Altos Hills", "Palo Alto", "Menlo Park", "Atherton", "Portola Valley", "Woodside",
+         "Redwood City", "San Carlos", "Belmont", "San Mateo", "Hillsborough", "Burlingame",
+         "Millbrae", "San Bruno", "South San Francisco", "Daly City", "San Francisco", "Sausalito",
+         "Mill Valley", "Tiburon", "Corte Madera", "Larkspur", "San Rafael"]
 
 DONT_SENTENCE = ("Plumbing, electrical, roofing, HVAC, demolition, tree work off the ground, "
                  "asbestos or medical waste, or anything that needs a licensed contractor.")
@@ -135,7 +141,7 @@ FAQS = [
     ]),
     ("Our crew and area", [
         ("Who does the work?", "High school and college students from the towns we serve."),
-        ("Where do you work?", ", ".join(TOWNS[:-1]) + " and " + TOWNS[-1] + "."),
+        ("Where do you work?", AREA_NOTE),
     ]),
     ("Services", [
         ("What don't you do?", DONT_SENTENCE),
@@ -380,7 +386,7 @@ def page_home():
     cards = "".join(f"""<a class="svc-card reveal" href="{s['slug']}.html">
       <span class="svc-ico">{icon(s['icon'])}</span><h3>{escape(s['name'])}</h3><p>{escape(s['short'])}</p>
       <span class="more">Learn more {icon('arrow','arr')}</span></a>""" for s in SERVICES)
-    trust = [("calendar", "Book online"), ("chat", "Free quotes"), ("users", "Students from your community"), ("pin", "13 Peninsula towns")]
+    trust = [("calendar", "Book online"), ("chat", "Free quotes"), ("users", "Students from your community"), ("pin", AREA)]
     trust_html = "".join(f"<li>{icon(i)}<span>{t}</span></li>" for i, t in trust)
     home_faq = [q for _, group in FAQS for q in group][:4]
     body = f"""
@@ -435,7 +441,7 @@ def page_home():
 </section>
 
 <section class="area">
-  <div class="wrap sec-head reveal"><p class="eyebrow">Where we work</p><h2>Woodside to Mountain View</h2></div>
+  <div class="wrap sec-head reveal"><p class="eyebrow">Where we work</p><h2>{AREA}</h2><p class="area-note">{AREA_NOTE}</p></div>
   {towns_marquee()}
   <ul class="wrap town-list">{''.join(f'<li>{icon("pin")}{t}</li>' for t in TOWNS)}</ul>
 </section>
@@ -452,7 +458,7 @@ def page_home():
 """
     title = "Commons Home Services | Junk Removal, Yard Work & Moving Help on the Peninsula"
     desc = ("Book junk removal, hauling, yard cleanup, moving help, gutter cleaning, pressure washing and holiday "
-            "lights from Woodside to Mountain View. Local student crews. Free quotes.")
+            f"lights from {AREA}. Local student crews. Free quotes.")
     return head(title, desc, p, schema()) + header(p) + body + footer(p)
 
 
@@ -507,7 +513,7 @@ def page_service(s):
 <section class="sec other-svc"><div class="wrap"><h2 class="reveal">Other services</h2><div class="other-grid reveal">{others}</div></div></section>
 """
     title = f"{s['name']} in Woodside, Palo Alto & Redwood City | Commons Home Services"
-    desc = f"{s['short']} Local student crews from Woodside to Mountain View. Book online or call {CONFIG['phone']}."
+    desc = f"{s['short']} Local student crews from {AREA}. Book online or call {CONFIG['phone']}."
     return head(title, desc, p) + header(p) + body + footer(p)
 
 
@@ -523,7 +529,7 @@ def page_book():
       <ul class="book-points">
         <li>{icon('chat')}<span><b>Free quotes.</b> Text a photo to {CONFIG['phone']} and we'll quote the job.</span></li>
         <li>{icon('users')}<span><b>Local crews.</b> High school and college students from the towns we serve.</span></li>
-        <li>{icon('pin')}<span><b>Woodside to Mountain View.</b> {len(TOWNS)} towns on the Peninsula.</span></li>
+        <li>{icon('pin')}<span><b>{AREA}.</b> No East Bay (yet).</span></li>
       </ul>
       <p class="book-call">Rather talk? Call or text <a href="tel:{CONFIG['tel']}">{CONFIG['phone']}</a>.</p>
     </div>

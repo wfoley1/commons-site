@@ -164,8 +164,9 @@ p{margin:0}
 /* area */
 .area{padding:72px 0 64px}
 .area .sec-head{margin-bottom:28px}
+.area-note{margin-top:10px;font-size:18px;color:var(--body)}
 .marquee{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--white);padding:18px 0}
-.marquee-track{display:flex;width:max-content;animation:marq 48s linear infinite}
+.marquee-track{display:flex;width:max-content;animation:marq 105s linear infinite}
 .marquee:hover .marquee-track{animation-play-state:paused}
 .marquee span{font:700 clamp(22px,3vw,32px)/1 var(--serif);color:var(--navy);padding:0 26px;white-space:nowrap;display:flex;align-items:center}
 .marquee span::after{content:"";width:8px;height:8px;background:var(--copper);border-radius:50%;margin-left:52px}
