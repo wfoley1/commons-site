@@ -28,10 +28,9 @@ CONFIG = {
     "booking_hours": [8, 18],  # first and last hour offered in the time picker, 24h
 }
 
-# Service area, Will 2026-10-02: San Jose to Marin, no East Bay. AREA/AREA_NOTE are the only
-# place the wording lives; TOWNS feeds the marquee, town list, footer and schema areaServed.
+# Service area, Will 2026-10-02. AREA is the only place the wording lives; TOWNS feeds the
+# marquee, town list, footer and schema areaServed.
 AREA = "San Jose to Marin"
-AREA_NOTE = "We do work from San Jose all the way to Marin. No East Bay though (yet)."
 TOWNS = ["San Jose", "Santa Clara", "Sunnyvale", "Cupertino", "Mountain View", "Los Altos",
          "Los Altos Hills", "Palo Alto", "Menlo Park", "Atherton", "Portola Valley", "Woodside",
          "Redwood City", "San Carlos", "Belmont", "San Mateo", "Hillsborough", "Burlingame",
@@ -141,7 +140,7 @@ FAQS = [
     ]),
     ("Our crew and area", [
         ("Who does the work?", "High school and college students from the towns we serve."),
-        ("Where do you work?", AREA_NOTE),
+        ("Where do you work?", f"Anywhere from {AREA}."),
     ]),
     ("Services", [
         ("What don't you do?", DONT_SENTENCE),
@@ -441,7 +440,7 @@ def page_home():
 </section>
 
 <section class="area">
-  <div class="wrap sec-head reveal"><p class="eyebrow">Where we work</p><h2>{AREA}</h2><p class="area-note">{AREA_NOTE}</p></div>
+  <div class="wrap sec-head reveal"><p class="eyebrow">Where we work</p><h2>{AREA}</h2></div>
   {towns_marquee()}
   <ul class="wrap town-list">{''.join(f'<li>{icon("pin")}{t}</li>' for t in TOWNS)}</ul>
 </section>
@@ -529,7 +528,7 @@ def page_book():
       <ul class="book-points">
         <li>{icon('chat')}<span><b>Free quotes.</b> Text a photo to {CONFIG['phone']} and we'll quote the job.</span></li>
         <li>{icon('users')}<span><b>Local crews.</b> High school and college students from the towns we serve.</span></li>
-        <li>{icon('pin')}<span><b>{AREA}.</b> No East Bay (yet).</span></li>
+        <li>{icon('pin')}<span><b>{AREA}.</b> {len(TOWNS)} towns.</span></li>
       </ul>
       <p class="book-call">Rather talk? Call or text <a href="tel:{CONFIG['tel']}">{CONFIG['phone']}</a>.</p>
     </div>

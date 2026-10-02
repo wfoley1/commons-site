@@ -164,7 +164,6 @@ p{margin:0}
 /* area */
 .area{padding:72px 0 64px}
 .area .sec-head{margin-bottom:28px}
-.area-note{margin-top:10px;font-size:18px;color:var(--body)}
 .marquee{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--white);padding:18px 0}
 .marquee-track{display:flex;width:max-content;animation:marq 105s linear infinite}
 .marquee:hover .marquee-track{animation-play-state:paused}
