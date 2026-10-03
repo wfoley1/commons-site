@@ -471,7 +471,7 @@ def page_service(s):
   <div class="wrap page-hero-grid">
     <div class="reveal">
       <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span>/</span><span>Services</span><span>/</span><span>{escape(s['name'])}</span></nav>
-      <h1>{escape(s['name'])} on the Peninsula</h1>
+      <h1>{escape(s['name'])} from {AREA}</h1>
       <p class="lede">{escape(s['lede'])}</p>
       {season}
       <div class="hero-actions">
@@ -506,7 +506,7 @@ def page_service(s):
 {cta_band(p, s['slug'])}
 <section class="sec other-svc"><div class="wrap"><h2 class="reveal">Other services</h2><div class="other-grid reveal">{others}</div></div></section>
 """
-    title = f"{s['name']} in Woodside, Palo Alto & Redwood City | Commons Home Services"
+    title = f"{s['name']} from {AREA} | Commons Home Services"
     desc = f"{s['short']} Local student crews from {AREA}. Book online."
     return head(title, desc, p) + header(p) + body + footer(p)
 
