@@ -304,7 +304,7 @@ def booking_form(slug=None, heading=True):
 
 def steps():
     items = [("calendar", "Book a time", "Pick a date and time and describe the job. It takes about a minute."),
-             ("chat", "We confirm by text", "We text you to confirm the time and talk through the job."),
+             ("phone", "We call you back", "We call to confirm the time, talk through the job and give you one flat price."),
              ("users", "A local crew shows up", "Students from your area do the work.")]
     li = "".join(f'<li class="reveal">{icon(i)}<span class="step-n">{n}</span><h3>{t}</h3><p>{d}</p></li>'
                  for n, (i, t, d) in enumerate(items, 1))
