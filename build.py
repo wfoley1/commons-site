@@ -16,11 +16,11 @@ ROOT = Path(__file__).parent
 
 CONFIG = {
     "site_url": "https://commonshomeservices.com",
-    "phone": "(650) 203-4266",
-    "tel": "+16502034266",
+    # No phone number anywhere on the site (Will, 2026-10-03): the booking form is the intake
+    # and Will calls each customer back. Email is the only fallback contact.
     "email": "commonshomeservices@gmail.com",
     # Free key from web3forms.com, issued to the business Gmail. Empty = booking form
-    # tells the customer to call or text instead (it never pretends to have sent).
+    # tells the customer to email instead (it never pretends to have sent).
     "web3forms_key": "7eeca234-f80f-404b-94c5-455190755da7",
     # Google reviews link (https://search.google.com/local/reviews?placeid=...),
     # available once the Business Profile is verified.
@@ -52,7 +52,7 @@ SERVICES = [
         "faqs": [
             ("Do you take mattresses?", "Yes. Book a time and list how many in the job description."),
             ("Where does the junk go?", "We sort every load. Metal and appliances go to a scrap recycler in Redwood City. Furniture in good shape goes to Habitat for Humanity ReStore or Goodwill. Clean mattresses are recycled through California's Bye Bye Mattress program. The rest goes to RethinkWaste's Shoreway Environmental Center in San Carlos, where yard waste is sent on to be composted. Only what can't be reused or recycled goes to the landfill."),
-            ("Can you clear out a whole garage?", "Yes. Describe what's in there when you book, and text photos to (650) 203-4266 so we can plan the crew and the truck."),
+            ("Can you clear out a whole garage?", "Yes. Describe what's in there when you book, and we'll call you to plan the crew and the truck."),
         ],
         "photos": [("truck-hauling.jpg", "Pickup truck bed full of hauled dirt", "A full load, hauled away"),
                    ("furniture-pickup.jpg", "Wooden table and bench set out for pickup", "Furniture pickup")],
@@ -131,10 +131,10 @@ SERVICES = [
 
 FAQS = [
     ("Booking and quotes", [
-        ("How do I book?", "Pick a date and time on the booking form and tell us about the job. We'll text you to confirm."),
-        ("How much will it cost?", "Every job is different, so we quote each one. Text a photo to (650) 203-4266 for a free quote."),
-        ("Can I send photos?", "Yes. Text them to (650) 203-4266. Photos help us plan the crew and the truck."),
-        ("How soon can you come out?", "Pick the date and time that works for you on the booking form. We'll text you to confirm."),
+        ("How do I book?", "Pick a date and time on the booking form and tell us about the job. We'll call you to confirm."),
+        ("How much will it cost?", "Every job is different, so we quote each one. Book a time and we'll call you with one flat price before any work starts."),
+        ("Can I send photos?", f"Yes. Email them to {CONFIG['email']}. Photos help us plan the crew and the truck."),
+        ("How soon can you come out?", "Pick the date and time that works for you on the booking form. We'll call you to confirm."),
         ("Do I need to be home?", "No. Tell us how to get in when you book, like a gate code or an open garage, and we'll text you when the job is done. Our crew are local students who care about this community, take care of your property, and take pride in their work."),
         ("How do I pay?", "We take Zelle. You pay when the job is done. For junk hauls, you pay once everything is loaded on the truck."),
     ]),
@@ -144,7 +144,7 @@ FAQS = [
     ]),
     ("Services", [
         ("What don't you do?", DONT_SENTENCE),
-        ("My job isn't listed. Can you still help?", "Ask. Describe it when you book, or text us at (650) 203-4266."),
+        ("My job isn't listed. Can you still help?", "Ask. Describe it when you book and we'll call you."),
     ]),
 ]
 
@@ -217,7 +217,7 @@ def head(title, desc, page, extra=""):
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@700;800&family=Manrope:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="styles.css">
-<script>document.documentElement.classList.add('js');window.COMMONS={json.dumps({k: CONFIG[k] for k in ('web3forms_key', 'booking_hours', 'phone')})};</script>
+<script>document.documentElement.classList.add('js');window.COMMONS={json.dumps({k: CONFIG[k] for k in ('web3forms_key', 'booking_hours', 'email')})};</script>
 <script src="site.js" defer></script>
 {extra}</head>
 """
@@ -238,7 +238,6 @@ def header(page):
       </div>
       <a class="nav-link" href="faq.html">FAQ</a>
       <a class="nav-link" href="{reviews}">Reviews</a>
-      <a class="nav-link nav-phone" href="tel:{CONFIG['tel']}">{icon('phone')}{CONFIG['phone']}</a>
     </nav>
     <div class="bar-actions">
       <a class="btn btn-primary btn-sm" href="{book_href(page)}">Book a job</a>
@@ -263,14 +262,13 @@ def footer(page):
     </div>
     <div><h3>Services</h3><ul>{svc}</ul></div>
     <div><h3>Company</h3><ul><li><a href="book.html">Book a job</a></li><li><a href="faq.html">FAQ</a></li><li><a href="{reviews}">Reviews</a></li></ul></div>
-    <div><h3>Contact</h3><ul><li><a href="tel:{CONFIG['tel']}">{CONFIG['phone']}</a></li><li><a href="sms:{CONFIG['tel']}">Text us</a></li><li><a href="mailto:{CONFIG['email']}">{CONFIG['email']}</a></li></ul></div>
+    <div><h3>Contact</h3><ul><li><a href="{book_href(page)}">Book online</a></li><li><a href="mailto:{CONFIG['email']}">{CONFIG['email']}</a></li></ul></div>
   </div>
   <div class="wrap foot-towns"><span>Serving</span> {' · '.join(TOWNS)}</div>
   <div class="wrap foot-legal">© {date.today().year} Commons Home Services</div>
 </footer>
-<nav class="dock" aria-label="Book or call">
+<nav class="dock" aria-label="Book a job">
   <a class="btn btn-primary" href="{book_href(page)}">{icon('calendar')}Book a job</a>
-  <a class="btn btn-quiet" href="tel:{CONFIG['tel']}" aria-label="Call {CONFIG['phone']}">{icon('phone')}Call</a>
 </nav>
 </body>
 </html>
@@ -283,7 +281,7 @@ def booking_form(slug=None, heading=True):
     svc = next((s for s in SERVICES if s["slug"] == slug), None)
     placeholder = svc["placeholder"] if svc else "Example: haul away an old couch and clear the weeds out back"
     head_html = ('<div class="form-head"><h2>Book a job</h2><p>Pick a time and tell us about the job. '
-                 "We'll text you to confirm.</p></div>") if heading else ""
+                 "We'll call you to confirm.</p></div>") if heading else ""
     return f"""<form class="book-form" novalidate>
   {head_html}
   <input type="hidden" name="service" value="{escape(svc['name']) if svc else ''}">
@@ -299,7 +297,7 @@ def booking_form(slug=None, heading=True):
   </div>
   <label><span>Address or town</span><input name="address" autocomplete="street-address" required></label>
   <button class="btn btn-primary btn-block" type="submit">{icon('calendar')}Book this time</button>
-  <p class="form-note">Have photos? Text them to <a href="sms:{CONFIG['tel']}">{CONFIG['phone']}</a>.</p>
+  <p class="form-note">Have photos? Email them to <a href="mailto:{CONFIG['email']}">{CONFIG['email']}</a>.</p>
   <div class="form-status" role="status" aria-live="polite"></div>
 </form>"""
 
@@ -348,10 +346,9 @@ def reviews_block():
 def cta_band(page, slug=None, title="Book your job"):
     return f"""<section class="cta-band">
   <div class="wrap cta-inner reveal">
-    <div><h2>{title}</h2><p>Pick a date and time. We'll text you to confirm.</p></div>
+    <div><h2>{title}</h2><p>Pick a date and time. We'll call you to confirm.</p></div>
     <div class="cta-actions">
       <a class="btn btn-primary btn-lg" href="{book_href(page, slug)}">{icon('calendar')}Book a job</a>
-      <a class="cta-phone" href="tel:{CONFIG['tel']}">or call {CONFIG['phone']}</a>
     </div>
   </div>
 </section>"""
@@ -367,7 +364,7 @@ def schema():
         "@context": "https://schema.org", "@type": "HomeAndConstructionBusiness",
         "name": "Commons Home Services", "slogan": "Local crews for local homes.",
         "url": CONFIG["site_url"] + "/", "image": CONFIG["site_url"] + "/img/og.jpg",
-        "telephone": "+1-650-203-4266", "email": CONFIG["email"],
+        "email": CONFIG["email"],
         "areaServed": [f"{t}, CA" for t in TOWNS],
         "hasOfferCatalog": {"@type": "OfferCatalog", "name": "Services", "itemListElement": [
             {"@type": "Offer", "itemOffered": {"@type": "Service", "name": s["name"],
@@ -398,7 +395,6 @@ def page_home():
       <p class="lede">Commons Home Services is a crew of high school and college students from your community. Pick a time, tell us the job, and we'll handle the rest.</p>
       <div class="hero-actions">
         <a class="btn btn-primary btn-lg" href="#book">{icon('calendar')}Book a job</a>
-        <a class="btn btn-ghost btn-lg" href="tel:{CONFIG['tel']}">{icon('phone')}{CONFIG['phone']}</a>
       </div>
     </div>
     <div class="hero-form" id="book">{booking_form()}</div>
@@ -480,7 +476,6 @@ def page_service(s):
       {season}
       <div class="hero-actions">
         <a class="btn btn-primary btn-lg" href="{book_href(p, s['slug'])}">{icon('calendar')}Book a job</a>
-        <a class="btn btn-ghost btn-lg" href="sms:{CONFIG['tel']}">{icon('chat')}Text a photo</a>
       </div>
     </div>
     <div class="page-hero-ico reveal">{icon(s['icon'], 'big-ico')}</div>
@@ -512,7 +507,7 @@ def page_service(s):
 <section class="sec other-svc"><div class="wrap"><h2 class="reveal">Other services</h2><div class="other-grid reveal">{others}</div></div></section>
 """
     title = f"{s['name']} in Woodside, Palo Alto & Redwood City | Commons Home Services"
-    desc = f"{s['short']} Local student crews from {AREA}. Book online or call {CONFIG['phone']}."
+    desc = f"{s['short']} Local student crews from {AREA}. Book online."
     return head(title, desc, p) + header(p) + body + footer(p)
 
 
@@ -524,13 +519,12 @@ def page_book():
     <div class="reveal">
       <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span>/</span><span>Book a job</span></nav>
       <h1>Book a job</h1>
-      <p class="lede">Pick a date and time and tell us about the job. We'll text you to confirm.</p>
+      <p class="lede">Pick a date and time and tell us about the job. We'll call you to confirm.</p>
       <ul class="book-points">
-        <li>{icon('chat')}<span><b>Free quotes.</b> Text a photo to {CONFIG['phone']} and we'll quote the job.</span></li>
+        <li>{icon('chat')}<span><b>Free quotes.</b> We call you back with one flat price before any work starts.</span></li>
         <li>{icon('users')}<span><b>Local crews.</b> High school and college students from the towns we serve.</span></li>
         <li>{icon('pin')}<span><b>{AREA}.</b> {len(TOWNS)} towns.</span></li>
       </ul>
-      <p class="book-call">Rather talk? Call or text <a href="tel:{CONFIG['tel']}">{CONFIG['phone']}</a>.</p>
     </div>
     <div class="hero-form reveal">{booking_form(heading=False)}</div>
   </div>
@@ -551,7 +545,7 @@ def page_faq():
   <div class="wrap reveal">
     <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span>/</span><span>FAQ</span></nav>
     <h1>Frequently asked questions</h1>
-    <p class="lede">Don't see your question? Call or text <a href="tel:{CONFIG['tel']}">{CONFIG['phone']}</a>.</p>
+    <p class="lede">Don't see your question? Email <a href="mailto:{CONFIG['email']}">{CONFIG['email']}</a>.</p>
   </div>
 </section>
 <section class="sec"><div class="wrap faq-page">{groups}{svc_groups}</div></section>
@@ -570,7 +564,7 @@ def main():
     (ROOT / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>\n')
     (ROOT / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {CONFIG['site_url']}/sitemap.xml\n")
     print(f"built {len(pages)} pages + sitemap.xml")
-    for key, why in (("web3forms_key", "booking form can't send; it tells customers to call or text instead"),
+    for key, why in (("web3forms_key", "booking form can't send; it tells customers to email instead"),
                      ("reviews_url", "Google reviews button points nowhere until the Business Profile is verified")):
         if not CONFIG[key]:
             print(f"WARNING: CONFIG['{key}'] is empty: {why}")

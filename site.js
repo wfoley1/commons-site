@@ -111,9 +111,7 @@
     form.elements.date.min = tomorrow();
     if (svcFromUrl && SERVICE_NAMES[svcFromUrl] && !form.elements.service.value) form.elements.service.value = SERVICE_NAMES[svcFromUrl];
     const status = $('.form-status', form);
-    const phone = C.phone || '(650) 203-4266';
-    const telHref = 'tel:+1' + phone.replace(/\D/g, '');
-    const fail = msg => { status.className = 'form-status err'; status.innerHTML = `${msg} Please call or text <a href="${telHref}">${phone}</a> and we'll book you in.`; };
+    const fail = msg => { status.className = 'form-status err'; status.innerHTML = `${msg} Please email <a href="mailto:${C.email}">${C.email}</a> and we'll book you in.`; };
 
     form.addEventListener('input', e => e.target.classList.remove('invalid'));
     form.addEventListener('submit', async e => {
@@ -150,7 +148,7 @@
         status.innerHTML = '';
         const strong = document.createElement('strong');
         strong.textContent = `Request sent for ${when}.`;
-        status.append(strong, document.createElement('br'), `We'll text you at ${v('phone')} to confirm.`);
+        status.append(strong, document.createElement('br'), `We'll call you at ${v('phone')} to confirm.`);
       } catch (err) {
         console.error('Commons booking failed:', err);
         fail('Your request did not go through.');
