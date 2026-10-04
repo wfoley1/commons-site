@@ -24,7 +24,7 @@ CONFIG = {
     "web3forms_key": "7eeca234-f80f-404b-94c5-455190755da7",
     # Google reviews link (https://search.google.com/local/reviews?placeid=...),
     # available once the Business Profile is verified.
-    "reviews_url": "",
+    "reviews_url": "https://g.page/r/CZ6p-0AY-jDXEBM/review",
     "booking_hours": [8, 18],  # first and last hour offered in the time picker, 24h
 }
 
@@ -332,12 +332,12 @@ def faq_list(pairs):
 
 def reviews_block():
     url = CONFIG["reviews_url"]
-    btn = (f'<a class="btn btn-outline" href="{url}" target="_blank" rel="noopener">{icon("star")}Read our Google reviews</a>'
+    btn = (f'<a class="btn btn-outline" href="{url}" target="_blank" rel="noopener">{icon("star")}Review us on Google</a>'
            if url else f'<a class="btn btn-outline" href="#reviews" data-pending="reviews">{icon("star")}Read our Google reviews</a>')
     return f"""<section class="reviews" id="reviews">
   <div class="wrap reviews-inner reveal">
     <div class="r-badge">{icon('star')}</div>
-    <div><h2>Reviews</h2><p>See what neighbors say about Commons on Google.</p></div>
+    <div><h2>Reviews</h2><p>Worked with us? A quick Google review helps your neighbors find us.</p></div>
     {btn}
   </div>
 </section>"""
