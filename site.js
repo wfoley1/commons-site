@@ -158,6 +158,57 @@
     });
   });
 
+  /* crew application: same Web3Forms inbox as bookings. ?src= says which flyer or post sent them. */
+  $$('.crew-form').forEach(form => {
+    const minAge = +form.elements.age.min || 16;
+    const status = $('.form-status', form);
+    const fail = msg => { status.className = 'form-status err'; status.innerHTML = `${msg} Please email <a href="mailto:${C.email}">${C.email}</a> with your name, age, school and phone.`; };
+
+    form.addEventListener('input', e => e.target.classList.remove('invalid'));
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      status.className = 'form-status'; status.textContent = '';
+      const required = ['name', 'age', 'school', 'town', 'phone', 'license', 'when'].map(n => form.elements[n]);
+      const missing = required.filter(el => !el.value.trim());
+      required.forEach(el => el.classList.toggle('invalid', missing.includes(el)));
+      if (missing.length) { status.className = 'form-status err'; status.textContent = 'Please fill in the highlighted fields.'; missing[0].focus(); return; }
+      if (+form.elements.age.value < minAge) { form.elements.age.classList.add('invalid'); status.className = 'form-status err'; status.textContent = `Commons hires students ${minAge} and up.`; return; }
+      if (form.elements.botcheck.checked) return;
+      if (!C.web3forms_key) { console.error('Commons crew form: CONFIG web3forms_key is empty, form cannot send.'); fail('Applications are not connected yet.'); return; }
+
+      const v = n => form.elements[n].value.trim();
+      const btn = $('button[type=submit]', form);
+      btn.disabled = true; const label = btn.innerHTML; btn.textContent = 'Sending…';
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({
+            access_key: C.web3forms_key,
+            subject: `Crew application: ${v('name')}, ${v('age')}, ${v('school')}`,
+            from_name: 'Commons website',
+            Name: v('name'), Age: v('age'), School: v('school'), Town: v('town'), Phone: v('phone'),
+            "Driver's license": v('license'), 'Can work': v('when'), Note: v('note') || 'None',
+            Source: params.get('src') || 'direct', Page: location.pathname
+          })
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.success) throw new Error(data.message || `HTTP ${res.status}`);
+        form.classList.add('sent');
+        status.className = 'form-status ok';
+        status.innerHTML = '';
+        const strong = document.createElement('strong');
+        strong.textContent = 'Application sent.';
+        status.append(strong, document.createElement('br'), `Will will call or text you at ${v('phone')}.`);
+      } catch (err) {
+        console.error('Commons crew application failed:', err);
+        fail('Your application did not go through.');
+      } finally {
+        btn.disabled = false; btn.innerHTML = label;
+      }
+    });
+  });
+
   /* reviews link not live yet: say so instead of jumping nowhere */
   $$('[data-pending="reviews"]').forEach(a => a.addEventListener('click', e => {
     e.preventDefault();

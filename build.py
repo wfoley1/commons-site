@@ -37,6 +37,10 @@ TOWNS = ["San Jose", "Santa Clara", "Sunnyvale", "Cupertino", "Mountain View", "
          "Millbrae", "San Bruno", "South San Francisco", "Daly City", "San Francisco", "Sausalito",
          "Mill Valley", "Tiburon", "Corte Madera", "Larkspur", "San Rafael"]
 
+# Crew recruiting page (crew.html), Will 2026-10-05: more leads than he can work alone.
+# Pay matches the crew pay in _research/commons/00-INDEX.md. Ladder work is 18+ by our own rule.
+CREW = {"pay": 20, "min_age": 16, "ladder_age": 18}
+
 DONT_SENTENCE = ("Plumbing, electrical, roofing, HVAC, demolition, tree work off the ground, "
                  "asbestos or medical waste, or anything that needs a licensed contractor.")
 
@@ -261,7 +265,7 @@ def footer(page):
       <a class="btn btn-primary" href="{book_href(page)}">Book a job</a>
     </div>
     <div><h3>Services</h3><ul>{svc}</ul></div>
-    <div><h3>Company</h3><ul><li><a href="book.html">Book a job</a></li><li><a href="faq.html">FAQ</a></li><li><a href="{reviews}">Reviews</a></li></ul></div>
+    <div><h3>Company</h3><ul><li><a href="book.html">Book a job</a></li><li><a href="faq.html">FAQ</a></li><li><a href="{reviews}">Reviews</a></li><li><a href="crew.html">Join the crew</a></li></ul></div>
     <div><h3>Contact</h3><ul><li><a href="{book_href(page)}">Book online</a></li><li><a href="mailto:{CONFIG['email']}">{CONFIG['email']}</a></li></ul></div>
   </div>
   <div class="wrap foot-towns"><span>Serving</span> {' · '.join(TOWNS)}</div>
@@ -298,6 +302,28 @@ def booking_form(slug=None, heading=True):
   <label><span>Address or town</span><input name="address" autocomplete="street-address" required></label>
   <button class="btn btn-primary btn-block" type="submit">{icon('calendar')}Book this time</button>
   <p class="form-note">Have photos? Email them to <a href="mailto:{CONFIG['email']}">{CONFIG['email']}</a>.</p>
+  <div class="form-status" role="status" aria-live="polite"></div>
+</form>"""
+
+
+def crew_form():
+    return f"""<form class="book-form crew-form" novalidate>
+  <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+  <div class="row two">
+    <label><span>Name</span><input name="name" autocomplete="name" required></label>
+    <label><span>Age</span><input type="number" name="age" inputmode="numeric" min="{CREW['min_age']}" max="99" required></label>
+  </div>
+  <div class="row two">
+    <label><span>School</span><input name="school" required placeholder="Your high school or college"></label>
+    <label><span>Town you live in</span><input name="town" autocomplete="address-level2" required></label>
+  </div>
+  <div class="row two">
+    <label><span>Phone</span><input type="tel" name="phone" autocomplete="tel" inputmode="tel" required></label>
+    <label><span>Driver's license?</span><select name="license" required><option value="">Select</option><option>Yes</option><option>No</option></select></label>
+  </div>
+  <label><span>When can you work?</span><input name="when" required placeholder="Example: Saturdays, weekdays after 3"></label>
+  <label><span>Anything else? (optional)</span><textarea name="note" rows="3" placeholder="Past jobs, sports, anything you're good at"></textarea></label>
+  <button class="btn btn-primary btn-block" type="submit">{icon('users')}Send my application</button>
   <div class="form-status" role="status" aria-live="polite"></div>
 </form>"""
 
@@ -555,8 +581,32 @@ def page_faq():
     return head("FAQ | Commons Home Services", "Answers about booking, quotes, our student crews, service area and each service.", p, extra) + header(p) + body + footer(p)
 
 
+def page_crew():
+    p = "crew.html"
+    body = f"""
+<section class="page-hero book-hero">
+  <div class="wrap book-grid">
+    <div class="reveal">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span>/</span><span>Join the crew</span></nav>
+      <h1>Join the crew</h1>
+      <p class="lede">Paid work close to home, ${CREW['pay']} an hour. Local students helping build up our community.</p>
+      <ul class="book-points">
+        <li>{icon('users')}<span><b>High school and college students, {CREW['min_age']} and up.</b> From the towns we serve, {AREA}.</span></li>
+        <li>{icon('truck')}<span><b>Junk hauling, yard work and moving help.</b> Ladder jobs like gutters and holiday lights are for crew {CREW['ladder_age']} and up.</span></li>
+        <li>{icon('calendar')}<span><b>Work when you're free.</b> We text you jobs and you take the ones that fit your schedule.</span></li>
+        <li>{icon('check')}<span><b>Paid for every booked hour.</b> Finish early and you still get paid for the hours that were booked.</span></li>
+        <li>{icon('chat')}<span><b>Start with Will.</b> Your first jobs are alongside Will, so you learn how we work.</span></li>
+      </ul>
+    </div>
+    <div class="hero-form reveal">{crew_form()}</div>
+  </div>
+</section>
+"""
+    return head("Join the Crew | Commons Home Services", f"Paid work for local high school and college students, ${CREW['pay']} an hour. Junk hauling, yard work and moving help, close to home.", p) + header(p) + body + footer(p)
+
+
 def main():
-    pages = {"index.html": page_home(), "book.html": page_book(), "faq.html": page_faq()}
+    pages = {"index.html": page_home(), "book.html": page_book(), "faq.html": page_faq(), "crew.html": page_crew()}
     pages.update({f"{s['slug']}.html": page_service(s) for s in SERVICES})
     for name, html in pages.items():
         (ROOT / name).write_text(html)
