@@ -38,8 +38,8 @@ TOWNS = ["San Jose", "Santa Clara", "Sunnyvale", "Cupertino", "Mountain View", "
          "Mill Valley", "Tiburon", "Corte Madera", "Larkspur", "San Rafael"]
 
 # Crew recruiting page (crew.html), Will 2026-10-05: more leads than he can work alone.
-# Pay matches the crew pay in _research/commons/00-INDEX.md. Ladder work is 18+ by our own rule.
-CREW = {"pay": 20, "min_age": 16, "ladder_age": 18}
+# No pay rate anywhere on the site (Will, 2026-10-05: set per hire). Ladder work is 18+ by our own rule.
+CREW = {"min_age": 16, "ladder_age": 18}
 
 DONT_SENTENCE = ("Plumbing, electrical, roofing, HVAC, demolition, tree work off the ground, "
                  "asbestos or medical waste, or anything that needs a licensed contractor.")
@@ -589,12 +589,12 @@ def page_crew():
     <div class="reveal">
       <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span>/</span><span>Join the crew</span></nav>
       <h1>Join the crew</h1>
-      <p class="lede">Paid work close to home, ${CREW['pay']} an hour. Local students helping build up our community.</p>
+      <p class="lede">Paid work close to home, on your own schedule. Local students helping build up our community.</p>
       <ul class="book-points">
         <li>{icon('users')}<span><b>High school and college students, {CREW['min_age']} and up.</b> From the towns we serve, {AREA}.</span></li>
         <li>{icon('truck')}<span><b>Junk hauling, yard work and moving help.</b> Ladder jobs like gutters and holiday lights are for crew {CREW['ladder_age']} and up.</span></li>
         <li>{icon('calendar')}<span><b>Work when you're free.</b> We text you jobs and you take the ones that fit your schedule.</span></li>
-        <li>{icon('check')}<span><b>Paid for every booked hour.</b> Finish early and you still get paid for the hours that were booked.</span></li>
+        <li>{icon('check')}<span><b>Paid for the hours you work.</b></span></li>
         <li>{icon('chat')}<span><b>Start with Will.</b> Your first jobs are alongside Will, so you learn how we work.</span></li>
       </ul>
     </div>
@@ -602,7 +602,7 @@ def page_crew():
   </div>
 </section>
 """
-    return head("Join the Crew | Commons Home Services", f"Paid work for local high school and college students, ${CREW['pay']} an hour. Junk hauling, yard work and moving help, close to home.", p) + header(p) + body + footer(p)
+    return head("Join the Crew | Commons Home Services", "Paid work on your own schedule for local high school and college students. Junk hauling, yard work and moving help, close to home.", p) + header(p) + body + footer(p)
 
 
 def main():
