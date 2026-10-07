@@ -198,7 +198,7 @@
         status.className = 'form-status ok';
         status.innerHTML = '';
         const strong = document.createElement('strong');
-        strong.textContent = 'Application sent.';
+        strong.textContent = 'Thank you for your application.';
         status.append(strong, document.createElement('br'), `Will will call or text you at ${v('phone')}.`);
       } catch (err) {
         console.error('Commons crew application failed:', err);

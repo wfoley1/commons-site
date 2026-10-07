@@ -286,7 +286,7 @@ def booking_form(slug=None, heading=True):
     placeholder = svc["placeholder"] if svc else "Example: haul away an old couch and clear the weeds out back"
     head_html = ('<div class="form-head"><h2>Book a job</h2><p>Pick a time and tell us about the job. '
                  "We'll call you to confirm.</p></div>") if heading else ""
-    return f"""<form class="book-form" novalidate>
+    return f"""<form class="form-card book-form" novalidate>
   {head_html}
   <input type="hidden" name="service" value="{escape(svc['name']) if svc else ''}">
   <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -307,7 +307,7 @@ def booking_form(slug=None, heading=True):
 
 
 def crew_form():
-    return f"""<form class="book-form crew-form" novalidate>
+    return f"""<form class="form-card crew-form" novalidate>
   <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
   <div class="row two">
     <label><span>Name</span><input name="name" autocomplete="name" required></label>

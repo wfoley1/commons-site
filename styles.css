@@ -79,15 +79,15 @@ p{margin:0}
 .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
 
 /* ---------- booking form ---------- */
-.book-form{background:var(--white);color:var(--ink);border-radius:var(--r);padding:26px;box-shadow:0 24px 60px rgba(0,0,0,.35);display:grid;gap:14px}
+.form-card{background:var(--white);color:var(--ink);border-radius:var(--r);padding:26px;box-shadow:0 24px 60px rgba(0,0,0,.35);display:grid;gap:14px}
 .form-head h2{font-size:26px}
 .form-head p{color:var(--body);font-size:15px;margin-top:6px}
-.book-form label{display:grid;gap:6px}
-.book-form label span{font:700 13px/1 var(--sans);color:var(--navy);letter-spacing:.02em}
-.book-form input,.book-form select,.book-form textarea{width:100%;font:500 16px/1.4 var(--sans);color:var(--ink);background:var(--paper);border:1px solid #D6D0C5;border-radius:var(--r);padding:12px 13px;transition:border-color .2s,box-shadow .2s,background .2s}
-.book-form textarea{resize:vertical;min-height:104px}
-.book-form input:focus,.book-form select:focus,.book-form textarea:focus{outline:none;border-color:var(--navy);background:var(--white);box-shadow:0 0 0 3px rgba(31,42,68,.12)}
-.book-form .invalid{border-color:#B3261E;background:#FFF7F6}
+.form-card label{display:grid;gap:6px}
+.form-card label span{font:700 13px/1 var(--sans);color:var(--navy);letter-spacing:.02em}
+.form-card input,.form-card select,.form-card textarea{width:100%;font:500 16px/1.4 var(--sans);color:var(--ink);background:var(--paper);border:1px solid #D6D0C5;border-radius:var(--r);padding:12px 13px;transition:border-color .2s,box-shadow .2s,background .2s}
+.form-card textarea{resize:vertical;min-height:104px}
+.form-card input:focus,.form-card select:focus,.form-card textarea:focus{outline:none;border-color:var(--navy);background:var(--white);box-shadow:0 0 0 3px rgba(31,42,68,.12)}
+.form-card .invalid{border-color:#B3261E;background:#FFF7F6}
 .row.two{display:grid;gap:14px;grid-template-columns:1fr 1fr}
 .hp{position:absolute;left:-9999px;opacity:0}
 .form-note{font-size:14px;color:var(--body);text-align:center}
@@ -97,8 +97,8 @@ p{margin:0}
 .form-status.ok{background:#EAF3EC;color:#1E4D2B;border:1px solid #BFD9C6}
 .form-status.err{background:#FBEFEE;color:#7A1E17;border:1px solid #EBC3BF}
 .form-status a{font-weight:700;color:inherit}
-.book-form.sent > :not(.form-status):not(.form-head){display:none}
-.book-form button[disabled]{opacity:.7;cursor:progress}
+.form-card.sent > :not(.form-status):not(.form-head){display:none}
+.form-card button[disabled]{opacity:.7;cursor:progress}
 
 /* ---------- trust bar ---------- */
 .trust{background:var(--navy-2);color:#E8E5DF;border-top:1px solid rgba(255,255,255,.08)}
