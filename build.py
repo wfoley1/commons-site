@@ -7,12 +7,18 @@ Content lives in CONFIG / SERVICES / FAQS below; markup lives in the page functi
 Edit content here, rebuild, never hand-edit the generated .html files.
 No prices anywhere on the site (standing rule 2026-09-29).
 """
+import hashlib
 import json
 from datetime import date
 from html import escape
 from pathlib import Path
 
 ROOT = Path(__file__).parent
+
+
+def asset(name):
+    """Asset URL stamped with its content hash, so a deploy never pairs new HTML with a cached old file."""
+    return f"{name}?v={hashlib.sha1((ROOT / name).read_bytes()).hexdigest()[:8]}"
 
 CONFIG = {
     "site_url": "https://commonshomeservices.com",
@@ -220,9 +226,9 @@ def head(title, desc, page, extra=""):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@700;800&family=Manrope:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="{asset('styles.css')}">
 <script>document.documentElement.classList.add('js');window.COMMONS={json.dumps({k: CONFIG[k] for k in ('web3forms_key', 'booking_hours', 'email')})};</script>
-<script src="site.js" defer></script>
+<script src="{asset('site.js')}" defer></script>
 {extra}</head>
 """
 

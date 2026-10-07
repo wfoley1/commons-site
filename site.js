@@ -199,7 +199,7 @@
         status.innerHTML = '';
         const strong = document.createElement('strong');
         strong.textContent = 'Thank you for your application.';
-        status.append(strong, document.createElement('br'), `Will will call or text you at ${v('phone')}.`);
+        status.append(strong);
       } catch (err) {
         console.error('Commons crew application failed:', err);
         fail('Your application did not go through.');
