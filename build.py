@@ -611,11 +611,22 @@ def page_crew():
     return head("Join the Crew | Commons Home Services", "Paid work on your own schedule for local high school and college students. Junk hauling, yard work and moving help, close to home.", p) + header(p) + body + footer(p)
 
 
+def page_review_redirect():
+    """commonshomeservices.com/review: a short link to text or say out loud that forwards to the Google review form."""
+    url = escape(CONFIG["reviews_url"])
+    return f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Review Commons Home Services</title>
+<meta name="robots" content="noindex"><meta http-equiv="refresh" content="0; url={url}">
+<script>location.replace({json.dumps(CONFIG["reviews_url"])})</script></head>
+<body><p><a href="{url}">Leave Commons Home Services a Google review</a></p></body></html>
+"""
+
+
 def main():
     pages = {"index.html": page_home(), "book.html": page_book(), "faq.html": page_faq(), "crew.html": page_crew()}
     pages.update({f"{s['slug']}.html": page_service(s) for s in SERVICES})
     for name, html in pages.items():
         (ROOT / name).write_text(html)
+    (ROOT / "review.html").write_text(page_review_redirect())  # short link, kept out of the sitemap
     urls = "".join(f"<url><loc>{CONFIG['site_url']}/{'' if n == 'index.html' else n}</loc></url>" for n in pages)
     (ROOT / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>\n')
     (ROOT / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {CONFIG['site_url']}/sitemap.xml\n")
