@@ -456,6 +456,7 @@ def page_home():
     {carousel(WORK, "Recent work")}
   </div>
 </section>
+{reviews_block()}
 
 <section class="sec about">
   <div class="wrap about-grid">
@@ -481,7 +482,6 @@ def page_home():
 </section>
 
 {cta_band(p)}
-{reviews_block()}
 """
     title = "Commons Home Services | Junk Removal, Yard Work & Moving Help on the Peninsula"
     desc = ("Book junk removal, hauling, yard cleanup, moving help, gutter cleaning, pressure washing and holiday "
