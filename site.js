@@ -98,6 +98,17 @@
   const hourLabel = h => `${((h + 11) % 12) + 1}:00 ${h < 12 ? 'AM' : 'PM'}`;
   const prettyDate = v => new Date(v + 'T12:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
   const params = new URLSearchParams(location.search);
+  /* where this visitor came from (?src= on an ad, flyer or buddy link), remembered 30 days so a visitor who
+     clicks around or comes back later still counts for the link that brought them */
+  const source = (() => {
+    const KEY = 'commons-src', fresh = params.get('src');
+    try {
+      if (fresh) { localStorage.setItem(KEY, JSON.stringify({ v: fresh, t: Date.now() })); return fresh; }
+      const kept = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (kept && Date.now() - kept.t < 30 * 864e5) return kept.v;
+    } catch (e) { /* storage blocked: fall back to the URL alone */ }
+    return fresh || 'direct';
+  })();
   const svcFromUrl = params.get('service');
   const SERVICE_NAMES = {
     'junk-removal': 'Junk Removal & Hauling', 'yard-work': 'Yard Work & Cleanup', 'moving-help': 'Moving Help',
@@ -138,7 +149,7 @@
             subject: `Booking request: ${when}${v('service') ? ' · ' + v('service') : ''}`,
             from_name: 'Commons website',
             'Requested time': when, Service: v('service') || 'Not specified', Job: v('job'),
-            Name: v('name'), Phone: v('phone'), Address: v('address'), Page: location.pathname
+            Name: v('name'), Phone: v('phone'), Address: v('address'), Source: source, Page: location.pathname
           })
         });
         const data = await res.json().catch(() => ({}));
@@ -189,7 +200,7 @@
             from_name: 'Commons website',
             Name: v('name'), Age: v('age'), School: v('school'), Town: v('town'), Phone: v('phone'),
             "Driver's license": v('license'), 'Can work': v('when'), Note: v('note') || 'None',
-            Source: params.get('src') || 'direct', Page: location.pathname
+            Source: source, Page: location.pathname
           })
         });
         const data = await res.json().catch(() => ({}));
