@@ -155,6 +155,7 @@
         const data = await res.json().catch(() => ({}));
         if (!res.ok || !data.success) throw new Error(data.message || `HTTP ${res.status}`);
         form.classList.add('sent');
+        if (window.fbq) fbq('track', 'Lead', { content_category: v('service') || 'Not specified' });  /* Meta: a booking, never the customer's details */
         status.className = 'form-status ok';
         status.innerHTML = '';
         const strong = document.createElement('strong');

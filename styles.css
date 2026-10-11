@@ -185,6 +185,13 @@ p{margin:0}
 details[open] .plus::after{transform:rotate(0)}
 .faq details p{padding:0 20px 18px;color:var(--body)}
 .faq-page{display:grid;gap:48px;max-width:860px}
+.prose{max-width:760px;color:var(--body)}
+.prose h2{font-size:clamp(22px,3vw,28px);margin:36px 0 10px}
+.prose h2:first-child{margin-top:0}
+.prose p{margin:0 0 14px}
+.prose ul{margin:0 0 14px;padding-left:22px}
+.prose li{margin:6px 0}
+.prose a{color:var(--cta);overflow-wrap:anywhere}
 .faq-group h2{font-size:26px;margin-bottom:16px}
 
 /* cta band */

@@ -32,6 +32,13 @@ CONFIG = {
     # available once the Business Profile is verified.
     "reviews_url": "https://g.page/r/CZ6p-0AY-jDXEBM/review",
     "booking_hours": [8, 18],  # first and last hour offered in the time picker, 24h
+    # Meta Pixel (dataset "Commons website", Will 2026-10-10). Meta-enabled Conversions API is on for the
+    # dataset in Events Manager, so the pixel is the only code needed. A successful booking fires Lead.
+    "meta_pixel_id": "3531043180431392",
+    # content= value of Meta's <meta name="facebook-domain-verification"> tag (Business settings > Brand safety > Domains).
+    "meta_domain_verification": "13prp94zv06i9u85zza3gkp50s1zy2",
+    # token from the Cloudflare Web Analytics snippet (Manage site). Cookieless; does not record ?src=.
+    "cloudflare_beacon_token": "bfb28db853c5455f8fc0d0047388a77a",
 }
 
 # Service area, Will 2026-10-02. AREA is the only place the wording lives; TOWNS feeds the
@@ -238,7 +245,7 @@ def head(title, desc, page, extra=""):
 <meta property="og:image" content="{CONFIG['site_url']}/img/og.jpg">
 <meta property="og:url" content="{url}">
 <meta name="theme-color" content="#1F2A44">
-<link rel="preconnect" href="https://fonts.googleapis.com">
+{tracking_head(page)}<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@700;800&family=Manrope:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="{asset('styles.css')}">
@@ -290,12 +297,12 @@ def footer(page):
     <div><h3>Contact</h3><ul><li><a href="{book_href(page)}">Book online</a></li><li><a href="mailto:{CONFIG['email']}">{CONFIG['email']}</a></li></ul></div>
   </div>
   <div class="wrap foot-towns"><span>Serving</span> {' · '.join(TOWNS)}</div>
-  <div class="wrap foot-legal">© {date.today().year} Commons Home Services</div>
+  <div class="wrap foot-legal">© {date.today().year} Commons Home Services{tracking_notice(page)}</div>
 </footer>
 <nav class="dock" aria-label="Book a job">
   <a class="btn btn-primary" href="{book_href(page)}">{icon('calendar')}Book a job</a>
 </nav>
-</body>
+{tracking_body()}</body>
 </html>
 """
 
@@ -626,6 +633,79 @@ def page_crew():
     return head("Join the Crew | Commons Home Services", "Paid work on your own schedule for local high school and college students. Junk hauling, yard work and moving help, close to home.", p) + header(p) + body + footer(p)
 
 
+# ---------------------------------------------------------------- tracking (Meta Pixel, Cloudflare)
+
+def tracking_head(page):
+    out = ""
+    if CONFIG["meta_domain_verification"]:
+        out += f'<meta name="facebook-domain-verification" content="{escape(CONFIG["meta_domain_verification"])}">\n'
+    if pixel_on(page):
+        out += ("<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?"
+                "n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;"
+                "n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];"
+                "s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');"
+                f"fbq('init','{CONFIG['meta_pixel_id']}');fbq('track','PageView');</script>\n")
+    return out
+
+
+def pixel_on(page):
+    """No pixel on the crew page: applicants are 16+ students typing their name and phone, and it is not an ad page."""
+    return bool(CONFIG["meta_pixel_id"]) and page != "crew.html"
+
+
+def tracking_notice(page):
+    """Meta's Business Tools Terms require a clear notice on every page the pixel runs on."""
+    if not pixel_on(page):
+        return ' · <a href="privacy.html">Privacy</a>'
+    return (' · We use cookies and similar tools from Meta to measure and show our ads. '
+            '<a href="privacy.html">Privacy and ad choices</a>')
+
+
+def tracking_body():
+    if not CONFIG["cloudflare_beacon_token"]:
+        return ""
+    token = json.dumps({"token": CONFIG["cloudflare_beacon_token"]})
+    # Cloudflare's own snippet, verbatim apart from the token (type='module', as the dashboard issues it 2026-10-10)
+    return f"<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{token}'></script>\n"
+
+
+def page_privacy():
+    p = "privacy.html"
+    meta = ""
+    if CONFIG["meta_pixel_id"]:
+        meta = """
+    <h2>Ads and Meta</h2>
+    <p>We use pixels, web beacons and other storage technologies from third parties, including Meta, to collect or receive information from this website and elsewhere on the internet. Meta and other third parties use that information to provide measurement services and to target and deliver ads. When you book a job, this site tells Meta that a booking happened, without your job details. If Meta's advanced matching is on, contact details you type into our booking form, such as your name and phone number, are scrambled (hashed) in your browser before they are sent, and Meta says it uses them to match the booking to people on Meta and then discards them. Our crew application page does not use the Meta pixel.</p>
+    <p>You can opt out of ads based on this information:</p>
+    <ul>
+      <li>In your Facebook or Instagram ad preferences: <a href="https://accountscenter.facebook.com/ad_preferences" rel="noopener">accountscenter.facebook.com/ad_preferences</a></li>
+      <li>With the Digital Advertising Alliance's WebChoices tool: <a href="https://optout.aboutads.info/" rel="noopener">optout.aboutads.info</a></li>
+      <li>By blocking or clearing cookies in your browser settings.</li>
+    </ul>
+    <p>Meta explains how it uses cookies in its <a href="https://www.facebook.com/privacy/policies/cookies/" rel="noopener">Cookies Policy</a>.</p>"""
+    analytics = ""
+    if CONFIG["cloudflare_beacon_token"]:
+        analytics = """
+    <h2>Visitor counts</h2>
+    <p>We count visits with Cloudflare Web Analytics, which does not use cookies.</p>"""
+    body = f"""
+<section class="page-hero">
+  <div class="wrap reveal">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span>/</span><span>Privacy</span></nav>
+    <h1>Privacy</h1>
+    <p class="lede">Last updated October 10, 2026.</p>
+  </div>
+</section>
+<section class="sec"><div class="wrap prose">
+    <h2>What you send us</h2>
+    <p>When you book a job, the form sends your name, phone number, address, the job and the time you picked to our email through our form provider, Web3Forms. Crew applications send the details on that form the same way. We use them to schedule and do the work, and we never sell them.</p>{meta}{analytics}
+    <h2>Questions</h2>
+    <p>Email <a href="mailto:{CONFIG['email']}">{CONFIG['email']}</a> and we'll answer, or delete your details if you ask.</p>
+</div></section>
+"""
+    return head("Privacy | Commons Home Services", "How Commons Home Services handles booking details, ads and visitor counts.", p) + header(p) + body + footer(p)
+
+
 def page_review_redirect():
     """commonshomeservices.com/review: a short link to text or say out loud that forwards to the Google review form."""
     url = escape(CONFIG["reviews_url"])
@@ -637,7 +717,8 @@ def page_review_redirect():
 
 
 def main():
-    pages = {"index.html": page_home(), "book.html": page_book(), "faq.html": page_faq(), "crew.html": page_crew()}
+    pages = {"index.html": page_home(), "book.html": page_book(), "faq.html": page_faq(), "crew.html": page_crew(),
+             "privacy.html": page_privacy()}
     pages.update({f"{s['slug']}.html": page_service(s) for s in SERVICES})
     for name, html in pages.items():
         (ROOT / name).write_text(html)
