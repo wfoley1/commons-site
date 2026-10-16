@@ -86,16 +86,19 @@ SERVICES = [
             ("What is defensible space clearing?", "Clearing dry brush, weeds and dead plants from around your home to lower fire risk. Describe your property when you book and we'll quote the job."),
             ("Do you haul the yard waste away?", "Yes. We can haul away everything we clear."),
         ],
-        "photos": [("mulch-front-pallet.jpg", "Old mulch in the palm beds, with the new mulch on site", "Mulch refresh, before"),
+        "photos": [("mulch-red-front-yard.jpg", "Front beds along a curved driveway covered in fresh red mulch", "Fresh red mulch out front"),
+                   ("mulch-front-pallet.jpg", "Old mulch in the palm beds, with the new mulch on site", "Mulch refresh, before"),
                    ("mulch-front-dusk-2.jpg", "Palm beds with fresh mulch at dusk", "Mulch refresh, after"),
                    ("mulch-front-truck.jpg", "Commons truck beside the freshly mulched beds at dusk", "Wrapping up at dusk"),
+                   ("mulch-red-palms.jpg", "Palms and flax along the house in fresh red mulch", "Red mulch along the house"),
+                   ("mulch-red-garage.jpg", "Palm bed by the garage in fresh red mulch, with the rake still out", "Finishing by the garage"),
+                   ("mulch-red-island.jpg", "Palm island by the street covered in fresh red mulch", "Red mulch around the palms"),
                    ("mulch-back-before.jpg", "Bare soil bed along a backyard fence with mulch bags laid out", "Backyard beds, before"),
                    ("mulch-back-after.jpg", "Backyard bed along the fence covered in fresh red mulch", "Backyard beds, after"),
+                   ("mulch-black-fence-gate.jpg", "Black mulch and new plants along a cedar fence, above a river rock wall", "Black mulch along the fence"),
                    ("mulch-black-during.jpg", "Black mulch going into beds along a fence, beside a stepping stone path", "Black mulch, during"),
                    ("mulch-black-after.jpg", "Beds along the fence covered in fresh black mulch around new plants", "Black mulch, after"),
-                   ("yard-before.jpg", "Overgrown backyard with dry grass and brush", "Before"),
-                   ("yard-after.jpg", "Same backyard cleared to bare soil", "After"),
-                   ("yard-after-2.jpg", "Cleared yard under oak trees with brush removed", "Brush and weeds cleared")],
+                   ("mulch-black-stepping-stones.jpg", "Black mulch around stepping stones and new plants", "Black mulch and stepping stones")],
     },
     {
         "slug": "moving-help", "icon": "box", "name": "Moving Help",
@@ -197,21 +200,23 @@ LOGO = ('<svg class="logo-mark" viewBox="0 0 140 100" aria-hidden="true"><path d
         '<text x="70" y="83" text-anchor="middle" font-family="Bitter,Georgia,serif" font-weight="800" font-size="40" fill="#1F2A44">C</text></svg>')
 
 HERO_SLIDES = [("truck-hauling.jpg", "Commons truck loaded with a haul"),
-               ("yard-after-2.jpg", "Yard cleared under oak trees"),
+               ("mulch-red-front-yard.jpg", "Front beds in fresh red mulch"),
                ("furniture-pickup.jpg", "Furniture set out for pickup")]
 
-WORK = [("mulch-front-before.jpg", "Palm tree beds covered in old, faded mulch", "Mulch refresh, before"),
+WORK = [("mulch-red-front-yard.jpg", "Front beds along a curved driveway covered in fresh red mulch", "Fresh red mulch out front"),
+        ("mulch-black-fence-gate.jpg", "Black mulch and new plants along a cedar fence, above a river rock wall", "Black mulch along the fence"),
+        ("mulch-front-before.jpg", "Palm tree beds covered in old, faded mulch", "Mulch refresh, before"),
         ("mulch-front-dusk.jpg", "The same palm beds under fresh red mulch at dusk", "Mulch refresh, after"),
         ("mulch-black-during.jpg", "Black mulch going into beds along a fence, beside a stepping stone path", "Black mulch, during"),
         ("mulch-black-after.jpg", "Beds along the fence covered in fresh black mulch around new plants", "Black mulch, after"),
+        ("mulch-black-stepping-stones.jpg", "Black mulch around stepping stones and new plants", "Black mulch and stepping stones"),
+        ("mulch-red-palms.jpg", "Palms and flax along the house in fresh red mulch", "Red mulch along the house"),
         ("mulch-back-before.jpg", "Bare soil bed along a backyard fence with mulch bags laid out", "Backyard beds, before"),
         ("mulch-back-after.jpg", "Backyard bed along the fence covered in fresh red mulch", "Backyard beds, after"),
         ("mulch-back-finished.jpg", "Finished backyard with lawn, hammock and mulched beds", "Backyard, finished"),
+        ("mulch-red-island.jpg", "Palm island by the street covered in fresh red mulch", "Red mulch around the palms"),
         ("roof-debris-cleared.jpg", "Flat roof after the debris was cleared, with the gutter along its edge", "Roof debris cleared"),
-        ("yard-before.jpg", "Overgrown backyard with dry grass and brush", "Yard cleanup, before"),
-        ("yard-after.jpg", "Same backyard cleared to bare soil", "Yard cleanup, after"),
         ("truck-hauling.jpg", "Pickup truck bed full of hauled dirt", "A full load, hauled away"),
-        ("yard-after-2.jpg", "Cleared yard under oak trees", "Brush and weeds cleared"),
         ("furniture-pickup.jpg", "Wooden table and bench set out for pickup", "Furniture pickup")]
 
 
