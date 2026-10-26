@@ -203,9 +203,15 @@ LOGO = ('<svg class="logo-mark" viewBox="0 0 140 100" aria-hidden="true"><path d
         '<path d="M42 47 L70 24 L98 47" fill="none" stroke="#A8683E" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>'
         '<text x="70" y="83" text-anchor="middle" font-family="Bitter,Georgia,serif" font-weight="800" font-size="40" fill="#1F2A44">C</text></svg>')
 
-HERO_SLIDES = [("truck-hauling.jpg", "Commons truck loaded with a haul"),
-               ("mulch-red-front-yard.jpg", "Front beds in fresh red mulch"),
-               ("furniture-pickup.jpg", "Furniture set out for pickup")]
+# The homepage background behind the booking form rotates through every photo on the site (Will, 10/25),
+# so a photo added to WORK or a service page joins it automatically. Only the first loads with the page.
+HERO_LEAD = ["truck-hauling.jpg", "mulch-red-front-yard.jpg"]
+HERO_EXCLUDE = {"furniture-pickup.jpg"}  # Jeannette's job: kept on its pages, off the background (Will, 10/25)
+
+
+def hero_slides():
+    files = HERO_LEAD + [p[0] for p in WORK] + [p[0] for s in SERVICES for p in s["photos"]]
+    return [f for i, f in enumerate(files) if f not in HERO_EXCLUDE and f not in files[:i]]
 
 WORK = [("mulch-red-front-yard.jpg", "Front beds along a curved driveway covered in fresh red mulch", "Fresh red mulch out front"),
         ("rock-mulch-curb.jpg", "River rock border, new plants and dark mulch beside a driveway gate", "River rock and new plants by the gate"),
@@ -446,7 +452,8 @@ def schema():
 
 def page_home():
     p = "index.html"
-    slides = "".join(f'<img src="img/{f}" alt="" class="{"on" if i == 0 else ""}">' for i, (f, _) in enumerate(HERO_SLIDES))
+    slides = "".join(f'<img src="img/{f}" alt="" class="on" fetchpriority="high">' if i == 0 else f'<img data-src="img/{f}" alt="">'
+                     for i, f in enumerate(hero_slides()))
     cards = "".join(f"""<a class="svc-card reveal" href="{s['slug']}.html">
       <span class="svc-ico">{icon(s['icon'])}</span><h3>{escape(s['name'])}</h3><p>{escape(s['short'])}</p>
       <span class="more">Learn more {icon('arrow','arr')}</span></a>""" for s in SERVICES)

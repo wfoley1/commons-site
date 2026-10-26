@@ -44,14 +44,18 @@
     reveals.forEach(el => io.observe(el));
   }
 
-  /* hero photo slideshow */
+  /* hero photo slideshow: only the first photo ships with the page; each next one loads a slide ahead */
   const slides = $$('.hero-bg img');
+  const load = img => { if (img && img.dataset.src && !img.getAttribute('src')) img.src = img.dataset.src; };
   if (slides.length > 1 && !reduced) {
     let i = 0;
+    addEventListener('load', () => load(slides[1]));
     setInterval(() => {
       slides[i].classList.remove('on');
       i = (i + 1) % slides.length;
+      load(slides[i]);
       slides[i].classList.add('on');
+      load(slides[(i + 1) % slides.length]);
     }, 6000);
   }
 
