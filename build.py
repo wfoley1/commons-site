@@ -72,6 +72,7 @@ SERVICES = [
             ("Can you clear out a whole garage?", "Yes. Describe what's in there when you book, and we'll call you to plan the crew and the truck."),
         ],
         "photos": [("truck-hauling.jpg", "Pickup truck bed full of hauled dirt", "A full load, hauled away"),
+                   ("dump-run-lumber.jpg", "Commons truck stacked with old lumber and scrap metal at the transfer station", "A full load at the transfer station"),
                    ("furniture-pickup.jpg", "Wooden table and bench set out for pickup", "Furniture pickup")],
     },
     {
@@ -87,6 +88,9 @@ SERVICES = [
             ("Do you haul the yard waste away?", "Yes. We can haul away everything we clear."),
         ],
         "photos": [("mulch-red-front-yard.jpg", "Front beds along a curved driveway covered in fresh red mulch", "Fresh red mulch out front"),
+                   ("rock-mulch-curb.jpg", "River rock border, new plants and dark mulch beside a driveway gate", "River rock and new plants by the gate"),
+                   ("rock-pickup.jpg", "Truck bed full of paper bags of rock and gravel at the stone yard", "Picking up the rock"),
+                   ("trench-hardware-cloth.jpg", "Backyard bed dug out, with a trench and hardware cloth laid flat over the soil", "Hardware cloth going in"),
                    ("mulch-front-pallet.jpg", "Old mulch in the palm beds, with the new mulch on site", "Mulch refresh, before"),
                    ("mulch-front-dusk-2.jpg", "Palm beds with fresh mulch at dusk", "Mulch refresh, after"),
                    ("mulch-front-truck.jpg", "Commons truck beside the freshly mulched beds at dusk", "Wrapping up at dusk"),
@@ -137,7 +141,7 @@ SERVICES = [
         "faqs": [
             ("Do you bring the equipment?", "Yes. We bring the pressure washer."),
         ],
-        "photos": [],
+        "photos": [("pressure-wash-wall.jpg", "Crew member pressure washing a long wooden retaining wall beside a walkway", "Washing a wood retaining wall")],
     },
     {
         "slug": "holiday-lights", "icon": "lights", "name": "Holiday Light Installation",
@@ -204,7 +208,12 @@ HERO_SLIDES = [("truck-hauling.jpg", "Commons truck loaded with a haul"),
                ("furniture-pickup.jpg", "Furniture set out for pickup")]
 
 WORK = [("mulch-red-front-yard.jpg", "Front beds along a curved driveway covered in fresh red mulch", "Fresh red mulch out front"),
+        ("rock-mulch-curb.jpg", "River rock border, new plants and dark mulch beside a driveway gate", "River rock and new plants by the gate"),
+        ("pressure-wash-wall.jpg", "Crew member pressure washing a long wooden retaining wall beside a walkway", "Washing a wood retaining wall"),
         ("mulch-black-fence-gate.jpg", "Black mulch and new plants along a cedar fence, above a river rock wall", "Black mulch along the fence"),
+        ("dump-run-lumber.jpg", "Commons truck stacked with old lumber and scrap metal at the transfer station", "A full load at the transfer station"),
+        ("trench-hardware-cloth.jpg", "Backyard bed dug out, with a trench and hardware cloth laid flat over the soil", "Hardware cloth going in"),
+        ("rock-pickup.jpg", "Truck bed full of paper bags of rock and gravel at the stone yard", "Picking up the rock"),
         ("mulch-front-before.jpg", "Palm tree beds covered in old, faded mulch", "Mulch refresh, before"),
         ("mulch-front-dusk.jpg", "The same palm beds under fresh red mulch at dusk", "Mulch refresh, after"),
         ("mulch-black-during.jpg", "Black mulch going into beds along a fence, beside a stepping stone path", "Black mulch, during"),
