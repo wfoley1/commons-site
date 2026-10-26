@@ -319,3 +319,26 @@ details[open] .plus::after{transform:rotate(0)}
   .js .reveal{opacity:1;transform:none}
   .marquee-track{flex-wrap:wrap;width:auto}
 }
+
+/* ---------- phones only (Will, 10/25). Nothing below reaches 640px and up, so tablet and desktop are untouched. */
+@media (max-width:639px){
+  /* a carousel's dots row could outgrow the screen (20 photos = 20 dots), which made the whole page wider
+     than the phone and pushed the arrows off the edges. 8+ photos: arrows and swipe only. */
+  .car-ctrl{gap:12px}
+  .dots{flex-wrap:wrap;justify-content:center;min-width:0}
+  .carousel:has(.slide:nth-child(8)) .dots{display:none}
+  .form-card{padding:22px 18px}
+}
+@media (max-width:479px){
+  .row.two{grid-template-columns:1fr}   /* date/time and name/phone stack instead of sharing ~300px */
+}
+@media (max-width:359px){
+  /* 320px iPhones (first SE): the header row and the long email address were 14-16px too wide */
+  .bar{gap:8px}
+  .brand{gap:6px}
+  .bar-actions .btn-sm{padding:0 10px}
+  p a{overflow-wrap:anywhere}
+}
+@media (max-width:639px) and (prefers-reduced-motion:reduce){
+  .marquee{display:none}   /* the still marquee stacks every town twice; the town list below already names them */
+}

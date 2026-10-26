@@ -5,13 +5,22 @@
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 
-  /* header shadow + mobile booking dock after the hero scrolls away */
+  /* header shadow + mobile booking dock after the hero scrolls away. The dock stays down while a form is
+     on screen: it would only cover the fields with a button that points at the form being filled in. */
   const header = $('.site-header');
   const dock = $('.dock');
+  const formsOnScreen = new Set();
   const onScroll = () => {
     header && header.classList.toggle('scrolled', scrollY > 8);
-    dock && dock.classList.toggle('show', scrollY > 420);
+    dock && dock.classList.toggle('show', scrollY > 420 && !formsOnScreen.size);
   };
+  if (dock && 'IntersectionObserver' in window) {
+    const fio = new IntersectionObserver(es => {
+      es.forEach(e => e.isIntersecting ? formsOnScreen.add(e.target) : formsOnScreen.delete(e.target));
+      onScroll();
+    });
+    $$('.form-card').forEach(f => fio.observe(f));
+  }
   addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
