@@ -145,18 +145,22 @@ SERVICES = [
     },
     {
         "slug": "holiday-lights", "icon": "lights", "name": "Holiday Light Installation",
-        "short": "Hung in November, taken down in January. Lights included.",
-        "lede": "We hang your holiday lights in November and take them down in January. Lights included.",
-        "does": ["Roofline lights", "Lights included", "Installed in November", "Taken down in January"],
+        "short": "Hung in November, taken down in January. The lights are yours to keep.",
+        "lede": "We hang your holiday lights in November and take them down in January. The lights are yours to keep.",
+        "does": ["Roofline lights", "Warm white bulb or icicle lights", "The lights are yours to keep", "Installed in November", "Taken down in January"],
         "dont": [],
         "season": "2026 season: booking now. Installs start in early November.",
         "placeholder": "Example: roofline across the front of a one story house",
         "faqs": [
-            ("Do I need to buy my own lights?", "No. Lights are included."),
+            ("Do I need to buy my own lights?", "No. We bring the lights, and they're yours to keep."),
             ("When do you install and take down?", "Installs start in early November. We take everything down in January."),
             ("Do you do two story homes?", "Yes."),
         ],
-        "photos": [],
+        "photos": [("lights-icicle-night.jpg", "Two-story stucco home lit with warm white icicle lights along both rooflines at night", "Icicle lights on a two-story home"),
+                   ("lights-los-altos-wide.jpg", "Single-story home in Los Altos with warm white bulb lights along every roofline under a cloudy night sky", "Warm white bulbs in Los Altos"),
+                   ("lights-icicle-install.jpg", "Crew member on a tile roof clipping icicle lights onto the gutter", "Clipping on the icicle lights"),
+                   ("lights-cottage-dusk.jpg", "Cottage behind a white picket fence with warm white bulb lights along the roofline at dusk", "Bulb lights on a cottage at dusk"),
+                   ("lights-los-altos-above.jpg", "The Los Altos home from above, every roofline lit in warm white bulbs", "Every roofline, lit")],
     },
 ]
 
@@ -213,7 +217,11 @@ def hero_slides():
     files = HERO_LEAD + [p[0] for p in WORK] + [p[0] for s in SERVICES for p in s["photos"]]
     return [f for i, f in enumerate(files) if f not in HERO_EXCLUDE and f not in files[:i]]
 
-WORK = [("mulch-red-front-yard.jpg", "Front beds along a curved driveway covered in fresh red mulch", "Fresh red mulch out front"),
+WORK = [("lights-icicle-night.jpg", "Two-story stucco home lit with warm white icicle lights along both rooflines at night", "Icicle lights on a two-story home"),
+        ("lights-los-altos-wide.jpg", "Single-story home in Los Altos with warm white bulb lights along every roofline under a cloudy night sky", "Warm white bulbs in Los Altos"),
+        ("lights-icicle-install.jpg", "Crew member on a tile roof clipping icicle lights onto the gutter", "Clipping on the icicle lights"),
+        ("lights-cottage-dusk.jpg", "Cottage behind a white picket fence with warm white bulb lights along the roofline at dusk", "Bulb lights on a cottage at dusk"),
+        ("mulch-red-front-yard.jpg", "Front beds along a curved driveway covered in fresh red mulch", "Fresh red mulch out front"),
         ("rock-mulch-curb.jpg", "River rock border, new plants and dark mulch beside a driveway gate", "River rock and new plants by the gate"),
         ("pressure-wash-wall.jpg", "Crew member pressure washing a long wooden retaining wall beside a walkway", "Washing a wood retaining wall"),
         ("mulch-black-fence-gate.jpg", "Black mulch and new plants along a cedar fence, above a river rock wall", "Black mulch along the fence"),
